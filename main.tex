@@ -1,0 +1,142 @@
+% !TeX program = pdflatex
+% !TeX encoding = UTF-8
+% !TeX spellcheck = it_IT
+% !TeX root = main.tex
+\documentclass[draftdate=true,oneside,documentstructure=collection,crop=false,pagelayout=standard ]{suftesi}
+\usepackage{ifxetex}
+\ifxetex
+\usepackage{fontspec}
+\setmainfont[Ligatures=TeX,Numbers=OldStyle]{Junicode}
+%\setmainfont{Lexia}
+\usepackage{polyglossia}
+\setmainlanguage{italian}
+\PolyglossiaSetup{italian}{indentfirst=false}
+%\setotherlanguages{english}
+\else
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+%\usepackage[english, italian]{babel}
+\usepackage[italian]{babel}
+\fi
+\usepackage[copyright]{ccicons}
+\usepackage{etoolbox}
+\makeatletter
+\preto{\tableofcontents}{%
+	\let\@headtitle\contentsname
+	\let\@title\contentsname
+	\let\@author\contentsname}
+\makeatother
+%\usepackage{eurosym}
+\usepackage{epigraph}
+\makeatletter
+\def\SUF@versionstring{\texttt{Versione  del \today}}
+\makeatother
+%\title{\textbf{{\LARGE R}}assegna\xheadbreak \textbf{{\LARGE S}}tampa}
+%\author{Claudio Duchi}
+\collectiontitle{\textbf{{\LARGE R}}assegna\xheadbreak \textbf{{\LARGE S}}tampa}
+\collectioneditor{Claudio Duchi}
+\date{\today}
+\usepackage{imakeidx}
+\indexsetup{level=\chapter*,toclevel=chapter*,noclearpage}
+\makeindex[name=authortitle, title={Indice Autori},columns=1]
+%\makeindex[columns=1]
+% % % % % % % % % % % % %gestione indici
+\usepackage[nottoc,numindex]{tocbibind}
+% % % % % % % % % % % % % % % % % %
+\usepackage[italian=guillemets]{csquotes}
+\usepackage[indexing,style=philosophy-verbose,backend=biber,sorting=ydnt,hyperref]{biblatex}
+%%\addbibresource{articolibes.bib}
+\addbibresource{../bibliografia_bes/bes.bib}
+\defbibheading{articolo}{\chapter{Riferimenti}}
+\makeatletter
+\def\thefirstpage#1{%
+	\expandafter\expandafter\expandafter\firstpage@i
+	\expandafter\expandafter\expandafter{\csnameabx@field@#1\endcsname}}
+\def\firstpage@i#1{\firstpage@ii#1-\@nil}
+\def\firstpage@ii#1-#2\@nil{#1}
+\newbibmacro*{index:name:title:pages}[5]{%
+	\begingroup
+	\ifuseprefix
+	{\def\abx@tempa{%
+			\ifblank{#4}{}{#4 }%
+			\@firstofone #2% remove spurious braces
+			\ifblank{#5}{}{ #5}%
+			\ifblank{#3}{}{, #3}%
+			\actualoperator
+			\ifblank{#4}{}{\MakeCapital{#4} }%
+			#2%
+			\ifblank{#5}{}{ #5}%
+			\ifblank{#3}{}{, #3}}}
+	{\def\abx@tempa{%
+			\@firstofone #2% remove spurious braces
+			\ifblank{#5}{}{ #5}%
+			\ifblank{#3#4}{}{,}%
+			\ifblank{#3}{}{ #3}%
+			\ifblank{#4}{}{ #4}}}%
+	\savefield{indextitle}{\abx@tempb}%
+	\iffieldpages{postnote}
+	{\protected@edef\theindexentry{\unexpanded{#1}{%
+				\abx@tempa!\thefield{indexsorttitle}%
+				\actualoperator\emph{\expandonce\abx@tempb}%
+				!\thefirstpage{postnote}\actualoperator\thefield{postnote}}}}
+	{\protected@edef\theindexentry{\unexpanded{#1}{%
+				\abx@tempa!\thefield{indexsorttitle}%
+				\actualoperator\emph{\expandonce\abx@tempb}}}}%
+	\theindexentry
+	\endgroup}
+ \global\newtoggle{usingmultind}
+ \AtBeginDocument{%
+ 	\@ifpackageloaded{multind}
+ 	{\@ifpackageloaded{imakeidx}
+ 		{\global\togglefalse{usingmultind}}
+ 		{\global\toggletrue{usingmultind}}}%
+ 	{\togglefalse{usingmultind}}}
+  \togglefalse{usingmultind}
+ \makeatother
+ \DeclareIndexNameFormat{title:pages}{%
+ 	\iftoggle{usingmultind}
+ 	{\usebibmacro{index:name:title:pages}{\index{authortitle}}{#1}{#3}{#5}{#7}}
+ 	{\usebibmacro{index:name:title:pages}{\index[authortitle]}{#1}{#3}{#5}{#7}}}
+ \renewbibmacro*{citeindex}{%
+ 	\ifciteindex{\indexnames[title:pages]{labelname}}{}}
+ \newcommand{\datapub}[1]{\null\vspace*{-3cm}
+ 	\begin{center}
+ 		#1
+ 	\end{center}
+ 	\vspace*{0.3cm}\null}
+\usepackage{hyperref}
+\hypersetup{%
+	colorlinks=true,
+	citecolor=blue,
+	%draft=true
+}
+\newcommand{\mancatesto}{[\dots]}
+\newcommand{\caporali}[1]{«#1»}
+\newcommand{\cita}[1]{«#1»}
+\newcommand{\cit}[1]{‘‘#1’’}
+\newcommand{\citi}[1]{‘#1’}
+\input{glossario}
+\listfiles
+\begin{document}
+\frontmatter
+\begin{center}
+	\frontispiece
+\end{center}
+\colophon[Windows 7]{Claudio Duchi}{Quest'opera è stata rilasciata con licenza Creative Commons Attribuzione - Non commerciale - Condividi allo stesso modo 3.0 Unported. Per leggere una copia della licenza visita il sito web\ \url{http://creativecommons.org/licenses/by-nc-sa/3.0/} o spedisci una lettera a Creative Commons, 171 Second Street, Suite 300, San Francisco, California, 94105, USA.\par \ccbyncsaeu}
+\tableofcontents
+\mainmatter
+\input{articoli}
+\backmatter
+\glsaddall
+\author{\indexname}
+\title{\indexname}
+\printglossaries
+%\nocite{*}
+\cleardoublepage
+\phantomsection
+\printbibliography[heading=articolo,keyword=articolo,title=Bibliografia]
+%\addcontentsline{toc}{chapter}{\indexname}
+\author{\indexname}
+\title{\indexname}
+\printindex[authortitle]
+\end{document}
