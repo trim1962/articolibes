@@ -1,0 +1,55 @@
+% !TeX program =xelatex
+% !TeX encoding = UTF-8
+% !TeX spellcheck = it_IT
+% !TeX root = test.tex
+\documentclass[draftdate=true,oneside,documentstructure=collection,crop=false,pagelayout=standard ]{suftesi}
+\usepackage{epigraph}
+\usepackage{ifxetex}
+\ifxetex
+\usepackage{fontspec}
+\setmainfont[Ligatures=TeX,Numbers=OldStyle]{Junicode}
+%\setmainfont{Lexia}
+\usepackage{polyglossia}
+\setmainlanguage{italian}
+\PolyglossiaSetup{italian}{indentfirst=false}
+%\setotherlanguages{english}
+\else
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+%\usepackage[english, italian]{babel}
+\usepackage[italian]{babel}
+\fi
+\makeatletter
+\def\SUF@versionstring{\texttt{Versione  del \today}}
+\makeatother
+%\title{\textbf{{\LARGE R}}assegna\xheadbreak \textbf{{\LARGE S}}tampa}
+%\author{Claudio Duchi}
+\collectiontitle{La vita di topolino}
+\collectioneditor{Paperino}
+\date{\today}
+\newcommand{\datapub}[1]{\null\vspace*{-3cm}
+ 	\begin{center}
+ 		#1
+ 	\end{center}
+ 	\vspace*{0.3cm}\null}
+\usepackage{hyperref}
+\hypersetup{%
+	colorlinks=true,
+	citecolor=blue,
+	%draft=true
+}
+\listfiles
+\begin{document}
+\frontmatter
+%\begin{center}
+%	\frontispiece
+%\end{center}
+%
+%\tableofcontents
+\mainmatter
+\includeart{test1}
+\includeart{test2}
+\includeart{test3}
+\backmatter
+
+\end{document}
